@@ -1,0 +1,49 @@
+const int buttonPin = 10;
+const int motorPin1 = 9;
+const int motorPin2 = 7;
+
+int buttonState = LOW;
+int lastButtonState = LOW;
+int motorState = LOW;
+
+void setup() {
+  pinMode(8, OUTPUT);
+  pinMode(motorPin1, OUTPUT);
+  digitalWrite(8, LOW);
+  digitalWrite(motorPin1, LOW);
+  pinMode(6, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  digitalWrite(6, LOW);
+  digitalWrite(motorPin2, LOW);
+  pinMode(buttonPin, INPUT_PULLUP);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH && lastButtonState == LOW) {
+    // Toggle LED state
+    motorState = !motorState;
+    
+
+    // Print the current state to the serial monitor
+    Serial.print("Motor State: ");
+    Serial.println(motorState);
+  }
+  if(motorState == 1){
+    digitalWrite(motorPin1, HIGH);
+    digitalWrite(motorPin2, HIGH);
+    delay(1); 
+    digitalWrite(motorPin1, LOW);
+    digitalWrite(motorPin2, LOW);
+    delay(1);
+   
+  }else{
+    digitalWrite(motorPin1, LOW);
+    digitalWrite(motorPin2, LOW);
+  }
+
+  lastButtonState = buttonState;
+}
