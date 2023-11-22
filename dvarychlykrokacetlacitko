@@ -1,0 +1,47 @@
+#include <AccelStepper.h>
+const int buttonPin = 10;
+const int motorPin1 = 9;
+const int motorPin2 = 7;
+
+int buttonState = LOW;
+int lastButtonState = LOW;
+int motorState = LOW;
+AccelStepper stepper1(AccelStepper::FULL4WIRE, motorPin1, motorPin2);
+void setup() {
+   stepper1.setMaxSpeed(5000.0); // Nastaví maximální rychlost na 1000 kroků za sekundu, upravte podle vašich potřeb
+  pinMode(8, OUTPUT);
+  pinMode(motorPin1, OUTPUT);
+  digitalWrite(8, LOW);
+  digitalWrite(motorPin1, LOW);
+  pinMode(6, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  digitalWrite(6, LOW);
+  digitalWrite(motorPin2, LOW);
+  pinMode(buttonPin, INPUT_PULLUP);
+    stepper1.setSpeed(5000.0); // Nastaví počáteční rychlost na 1000 kroků za sekundu, upravte podle vašich potřeb
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  stepper1.runSpeed();
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH && lastButtonState == LOW) {
+    // Toggle LED state
+    motorState = !motorState;
+    
+
+    // Print the current state to the serial monitor
+    Serial.print("Motor State: ");
+    Serial.println(motorState);
+  }
+  if(motorState == 1){
+    stepper1.setSpeed(5000.0);
+   
+  }else{
+    stepper1.setSpeed(0.0);
+  }
+
+  lastButtonState = buttonState;
+}
