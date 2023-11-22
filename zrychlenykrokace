@@ -1,0 +1,25 @@
+#include <AccelStepper.h>
+
+const int motorPin1 = 6;
+const int motorPin2 = 7;
+const int motorPin3 = 8;
+const int motorPin4 = 9;
+
+AccelStepper stepper1(AccelStepper::FULL4WIRE, motorPin1, motorPin2, motorPin3, motorPin4);
+
+void setup() {
+  stepper1.setMaxSpeed(5000.0); // Nastaví maximální rychlost na 1000 kroků za sekundu, upravte podle vašich potřeb
+
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  pinMode(motorPin3, OUTPUT);
+  pinMode(motorPin4, OUTPUT);
+
+  stepper1.setSpeed(5000.0); // Nastaví počáteční rychlost na 1000 kroků za sekundu, upravte podle vašich potřeb
+}
+
+void loop() {
+  stepper1.runSpeed(); // Pohne se o nastavenou rychlost (runSpeed) - zde 1000 kroků za sekundu
+
+  // Můžete přidat další kód nebo akce, které se mají provádět během pohybu motoru
+}
