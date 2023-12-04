@@ -1,26 +1,18 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-
-// inicializace knihovny LiquidCrystal
-// první parametr je I2C adresa
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
-  lcd.begin(); // inicializace displeje bez specifikace rozměrů
+  lcd.init();
   lcd.backlight();
   lcd.clear();
 }
 
 void loop() {
-  // počkej sekundu
   delay(1000);
-  // nastav kurzor na první řádek
   lcd.setCursor(0, 0);
-  // napiš na první řádek "Totalni PISS"
-  lcd.print("Totalni PISS");
-  
-  // nastav kurzor na druhý řádek
+  lcd.print("Prvni radek");
+
   lcd.setCursor(0, 1);
-  // napiš na druhý řádek "vagoule"
-  lcd.print("vagoule");
+  lcd.print("Druhy radek");
 }
