@@ -7,7 +7,6 @@ int buttonState = LOW;
 int lastButtonState = LOW;
 int motorState = LOW;
 AccelStepper stepper1(AccelStepper::FULL4WIRE, motorPin1, motorPin2);
-
 void setup() {
   stepper1.setMaxSpeed(5000.0);
   pinMode(1, OUTPUT);
