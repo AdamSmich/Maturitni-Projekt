@@ -1,0 +1,80 @@
+const int buttonPin = 8;
+const int motorPin1 = 2;
+const int motorPin2 = 4;
+String rfidKarticka = "21814110944";
+
+int buttonState = LOW;
+int lastButtonState = LOW;
+int motorState = LOW;
+#include <SPI.h>
+#include <MFRC522.h>
+#define SS_PIN 20
+#define RST_PIN 5
+boolean stav = false;
+
+MFRC522 rfid(SS_PIN, RST_PIN);
+String karta;
+String lastKarta;
+
+void setup() {
+   Serial.begin(9600);
+  SPI.begin(); // init SPI bus
+  rfid.PCD_Init(); // init MFRC522
+
+  Serial.println("Přiložte kartu ke čtečce.");
+
+  pinMode(1, OUTPUT);
+  pinMode(motorPin1, OUTPUT);
+  digitalWrite(1, LOW);
+  digitalWrite(motorPin1, LOW);
+  pinMode(3, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  digitalWrite(3, LOW);
+  digitalWrite(motorPin2, LOW);
+  pinMode(buttonPin, INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+void loop() {
+   if (rfid.PICC_IsNewCardPresent()) { // new tag is available
+    if (rfid.PICC_ReadCardSerial()) { // NUID has been readed
+      MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
+      //Serial.print("RFID/NFC Tag Type: ");
+      //Serial.println(rfid.PICC_GetTypeName(piccType));
+
+      // print NUID in Serial Monitor in the hex format
+      Serial.print("UID:");
+      for (int i = 0; i < rfid.uid.size; i++) {
+
+        Serial.print(rfid.uid.uidByte[i]);
+      karta = karta + (rfid.uid.uidByte[i]);
+        
+      }
+      Serial.println();
+      lastKarta = karta;
+      
+      karta = "";
+      Serial.println(lastKarta);
+      Serial.println();
+      rfid.PICC_HaltA(); // halt PICC
+      rfid.PCD_StopCrypto1(); // stop encryption on PCD
+    }
+  }
+
+ if (buttonState == HIGH && lastButtonState == LOW && lastKarta == rfidKarticka) {
+    // Toggle LED state
+    motorState = !motorState;
+    Serial.print("Motor State: ");
+    Serial.println(motorState);
+  }
+  if(motorState == 1){
+    digitalWrite(motorPin1, HIGH);
+    digitalWrite(motorPin2, HIGH);
+   
+  }else{
+    digitalWrite(motorPin1, LOW);
+    digitalWrite(motorPin2, LOW);
+  }
+
+  lastButtonState = buttonState;
+}
