@@ -1,0 +1,25 @@
+#define DIR 8
+#define STEP 9
+int kroky = 0;
+
+void setup() {
+  pinMode(DIR, OUTPUT);
+  pinMode(STEP, OUTPUT);
+  digitalWrite(DIR, LOW);
+  digitalWrite(STEP, LOW);
+}
+
+void loop() {
+  digitalWrite(STEP, HIGH);
+  delayMicroseconds(100);
+  digitalWrite(STEP, LOW);
+  delayMicroseconds(100);
+  kroky = kroky + 1;
+  if (kroky == 32 768) { 
+    bool stav = digitalRead(DIR);
+    digitalWrite(DIR, !stav);
+    kroky = 0;
+    delay(500);
+  }
+}
+
