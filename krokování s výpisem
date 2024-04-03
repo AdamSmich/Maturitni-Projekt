@@ -1,0 +1,51 @@
+#define DIR 8
+#define STEP 9
+
+#define DIR1 6
+#define STEP1 7
+
+#define DIR2 4
+#define STEP2 5
+
+int kroky = 0;
+
+void setup() {
+  pinMode(DIR, OUTPUT);
+  pinMode(STEP, OUTPUT);
+  pinMode(DIR1, OUTPUT);
+  pinMode(STEP1, OUTPUT);
+  pinMode(DIR2, OUTPUT);
+  pinMode(STEP2, OUTPUT);
+  digitalWrite(DIR, LOW);
+  digitalWrite(STEP, LOW); 
+  digitalWrite(DIR1, LOW);
+  digitalWrite(STEP1, LOW);
+  digitalWrite(DIR2, LOW);
+  digitalWrite(STEP2, LOW);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  
+  if (kroky >= 32768) { 
+    // Zastavení motorů
+    digitalWrite(STEP, LOW); 
+    digitalWrite(STEP1, LOW);
+    digitalWrite(STEP2, LOW);
+    while (true) {}
+  } else {
+    digitalWrite(DIR, LOW);
+    digitalWrite(STEP, HIGH);
+    digitalWrite(STEP1, HIGH);
+    digitalWrite(STEP2, HIGH);
+    delayMicroseconds(100);
+    digitalWrite(STEP, LOW);
+    digitalWrite(STEP1, LOW);
+    digitalWrite(STEP2, LOW);
+    delayMicroseconds(100);
+    kroky++; 
+    Serial.print("Pocet kroku: ");
+    Serial.println(kroky);
+  }
+}
